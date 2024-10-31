@@ -33,7 +33,7 @@ class _IsolateMessage {
 }
 
 class Server {
-  // HttpServer? _server;
+  HttpServer? _server;
   VirtualDirectory? _staticServer;
   final RouteTree _tree = RouteTree();
   final List<Middleware> _middlewares = [];
@@ -69,7 +69,7 @@ class Server {
     final password = message.password;
 
     Server handle(HttpServer server) {
-      // _server = server;
+      _server = server;
       server.listen((HttpRequest req) {
         final match = _tree.matchRoute(req.uri.path);
 
@@ -110,9 +110,9 @@ class Server {
     return HttpServer.bind(host, port, shared: true).then(handle);
   }
 
-  // void stop() {
-  //   _server?.close();
-  // }
+  void stop() {
+    _server?.close();
+  }
 
   Method _reqMethod(HttpRequest req) {
     if (req.headers.value('connection')?.toLowerCase() == 'upgrade') {
