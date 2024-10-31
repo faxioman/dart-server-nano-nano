@@ -1,4 +1,4 @@
-part of '../../server_nano.dart';
+part of '../../server_nano_nano.dart';
 
 typedef DisposeCallback = void Function();
 

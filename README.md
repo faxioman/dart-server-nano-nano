@@ -1,23 +1,19 @@
-# server_nano
+# server_nano_nano
 
-A light, **very fast**, and friendly http/websocket server written in dart.
-
-- **Lightweight**: Minimal footprint for optimal efficiency.
-- **Fast**: Prioritizes performance at every turn.
-- **Friendly**: Intuitive APIs tailored for both novices and experts.
-- **Secure**: Built with best security practices to ensure data safety.
-- **Powerful**: Robust features to cater to a wide range of applications, like rich websockets with room support, events, and broadcasting capabilities.
-
-I'm building the same library in rust too, if you want, [check it here](https://github.com/jonataslaw/server_nano).
+A super light http server written in dart.
+This project is a clone of the great [server_nano](https://pub.dev/packages/server_nano) project but:
+- no websocket support
+- no performance mode
+- some fixes
 
 ## 🚀 Getting Started
 
 ### Installation
 
-To integrate `server_nano` into your Dart project:
+To integrate `server_nano_nano` into your Dart project:
 
 ```shell
-dart pub add server_nano
+dart pub add server_nano_nano
 ```
 
 ### Basic Usage
@@ -25,7 +21,7 @@ dart pub add server_nano
 Here's a basic example to get you started:
 
 ```dart
-import 'package:server_nano/server_nano.dart';
+import 'package:server_nano_nano/server_nano_nano.dart';
 
 void main() {
   final server = Server();
@@ -42,145 +38,19 @@ void main() {
     res.send('Hello User ${req.params['id']}!');
   });
 
-  // websockets out-the-box
-  server.ws('/socket', (socket) {
-    socket.onMessage((message) {
-      print(message);
-    });
-
-    // rooms support
-    socket.join('dev-group');
-
-    socket.emitToRoom(
-        'connected', 'dev-group', 'User ${socket.id} connected to dev-group');
-  });
-
   server.listen(port: 3000);
 }
 ```
 
-# How fast is it?
+# Why to use server_nano_nano? 🤔
 
-`server_nano` is designed to be as fast as possible.
-
-Here is a test using `wrk` to measure the performance of the server in a Macbook Pro M1:
-
-```shell
-@MacBook-Pro ~ % wrk -t 6 -c 120 -d 10s --latency http://localhost:3000/
-Running 10s test @ http://localhost:3000/
-  6 threads and 120 connections
-  Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency     1.83ms    4.60ms  93.28ms   96.85%
-    Req/Sec    17.12k     3.03k   20.57k    90.17%
-  Latency Distribution
-     50%    1.02ms
-     75%    1.38ms
-     90%    2.01ms
-     99%   28.34ms
-  1022096 requests in 10.00s, 212.49MB read
-Requests/sec: 102164.16
-Transfer/sec:     21.24MB
-```
-
-In this test, we have a endopoint that returns a simple json object.
-
-```dart
-// We compile the code with the command: `dart compile exe ./example/app.dart` and `./example/app.exe` to run the server.
-Future<void> main() async {
-  final server = Server();
-
-  server.get('/', (req, res) {
-    res.sendJson({'Hello': 'World!'});
-  });
-
-  await server.listen(port: 3000);
-}
-```
-
-To compare, here is the same test using `express`, the most popular web framework for Node.js:
-
-```typescript
-const expressApp = express();
-
-const expressPort = 3003;
-
-expressApp.get("/", (req, res) => {
-  res.json({ hello: "world!!!" });
-});
-
-expressApp.listen(expressPort, () => {
-  console.log(`[server]: Server is running at http://localhost:${expressPort}`);
-});
-```
-
-```shell
-@MacBook-Pro ~ % wrk -t 6 -c 120 -d 10s --latency http://localhost:3003/
-Running 10s test @ http://localhost:3003/
-  6 threads and 120 connections
-  Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency    10.23ms   30.90ms 542.87ms   98.17%
-    Req/Sec     2.99k   358.79     3.72k    89.92%
-  Latency Distribution
-     50%    6.24ms
-     75%    6.91ms
-     90%    8.13ms
-     99%  164.88ms
-  180310 requests in 10.10s, 43.85MB read
-Requests/sec:  17848.16
-Transfer/sec:      4.34MB
-```
-
-Holy moly! `server_nano` could handle 101972.97 requests per second, while `express` could handle only 17848.16 requests per second. That's a huge difference!
-
-So, let's compare the performance of `server_nano` with `fastify`, a fast and second more popular web framework for Node.js:
-
-```typescript
-const fastifyPort = 3002;
-
-const fastify = Fastify({
-  logger: false,
-});
-
-fastify.get("/", (request, reply) => {
-  return { hello: "world!!!" };
-});
-
-fastify.listen({ port: fastifyPort, host: "0.0.0.0" }, (err, address) => {
-  if (err) throw err;
-  console.log(`[server]: Server is running at http://localhost:${fastifyPort}`);
-});
-```
-
-```shell
-@MacBook-Pro ~ % wrk -t 6 -c 120 -d 10s --latency http://localhost:3002/
-Running 10s test @ http://localhost:3002/
-  6 threads and 120 connections
-  Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency     3.32ms    8.68ms 228.04ms   99.00%
-    Req/Sec     7.61k   707.93     8.25k    92.24%
-  Latency Distribution
-     50%    2.53ms
-     75%    2.65ms
-     90%    2.85ms
-     99%   11.75ms
-  458601 requests in 10.10s, 83.53MB read
-Requests/sec:  45398.17
-Transfer/sec:      8.27MB
-```
-
-Good job fastify! But `server_nano` is still faster! 😎 (a lot faster)
-
-# Why to use server_nano? 🤔
-
-- **Performance**: `server_nano` is designed to be as fast as possible.
-- **Friendly API**: `server_nano` provides an intuitive API that is easy to use. It is like express.js but in dart (and faster).
-- **Websockets**: `server_nano` supports websockets out-the-box.
-- **Middlewares**: `server_nano` supports middlewares to help you manipulate request and response objects.
-- **Static Files**: `server_nano` supports serving static files out of the box.
-- **Security**: `server_nano` supports https and has a helmet middleware to mitigate common web vulnerabilities.
-- **Cross-platform**: `server_nano` is cross-platform and can run on ANY THING!
-- **Open Source**: `server_nano` is open source and free to use.
-- **Minimal Footprint**: `server_nano` has a minimal footprint for optimal efficiency. You can read the entire source code in a few minutes.
+- **Friendly API**: `server_nano_nano` provides an intuitive API that is easy to use. It is like express.js but in dart (and faster).
+- **Middlewares**: `server_nano_nano` supports middlewares to help you manipulate request and response objects.
+- **Static Files**: `server_nano_nano` supports serving static files out of the box.
+- **Security**: `server_nano_nano` supports https and has a helmet middleware to mitigate common web vulnerabilities.
+- **Cross-platform**: `server_nano_nano` is cross-platform and can run on ANY THING!
+- **Open Source**: `server_nano_nano` is open source and free to use.
+- **Minimal Footprint**: `server_nano_nano` has a minimal footprint for optimal efficiency. You can read the entire source code in a few minutes.
 
 # 📘 API Reference:
 
@@ -188,7 +58,7 @@ Good job fastify! But `server_nano` is still faster! 😎 (a lot faster)
 
 ### HTTP:
 
-`server_nano` supports a variety of HTTP methods like GET, POST, PUT, DELETE, PATCH, OPTIONS, HEAD, CONNECT and TRACE. The syntax for each method is straightforward:
+`server_nano_nano` supports a variety of HTTP methods like GET, POST, PUT, DELETE, PATCH, OPTIONS, HEAD, CONNECT and TRACE. The syntax for each method is straightforward:
 
 ```dart
 server.get('/path', handler);
@@ -272,62 +142,6 @@ Each method is chainable, allowing for a fluent interface when constructing resp
 res.status(200).setContentType('text/plain').send('Hello, World!');
 ```
 
-### WebSocket:
-
-Server nano supports comprehensive websockets right out-of-the-box, catering to a broad spectrum of real-time applications. The websocket module offers:
-
-- **Rich Features**: From basic message sending to advanced event emitting.
-- **Room Management**: Handle user groups effortlessly with join, leave, and broadcast-to-room functions.
-- **Event Listeners**: Customizable listeners for various socket events.
-- **Broadcasting**: Reach one, some, or all connected clients with fine-tuned control.
-
-You can set up a WebSocket route by calling the `ws` method on your server instance:
-
-```dart
-server.ws('/socket', (socket) {
-  // Your logic here.
-});
-```
-
-#### Sending:
-
-- **send(message)**: Sends a message through the WebSocket.
-- **emit(event, data)**: Emits a message with a specified event type.
-
-#### Broadcasting:
-
-- **broadcast(message)**: Sends a message to all sockets except the current one.
-- **broadcastEvent(event, data)**: Emits a message with a specified event type to all sockets except the current one.
-- **sendToAll(message)**: Sends a message to all connected sockets.
-- **emitToAll(event, data)**: Emits a message with a specified event type to all connected sockets.
-- **broadcastToRoom(room, message)**: Sends a message to all sockets in a specified room except the current one.
-
-#### Room Management:
-
-- **join(room)**: Joins a specified room.
-- **leave(room)**: Leaves a specified room.
-- **sendToRoom(room, message)**: Sends a message to all sockets in a specified room.
-- **emitToRoom(event, room, message)**: Emits a message with a specified event type to all sockets in a specified room.
-
-#### Retrieval:
-
-- **getSocketById(id)**: Gets a socket instance by its ID.
-- **length**: Provides the count of all active sockets.
-- **rawSocket**: Access to the underlying WebSocket instance.
-
-#### Event Listeners:
-
-- **onOpen(fn)**: Registers a callback function that triggers when the WebSocket opens.
-- **onClose(fn)**: Registers a callback function that triggers when the WebSocket closes.
-- **onError(fn)**: Registers a callback function that triggers when there's an error in the WebSocket.
-- **onMessage(fn)**: Registers a callback function that triggers when a message is received.
-- **on(event, message)**: Registers a callback function for a specified event.
-
-#### Other:
-
-- **id**: Unique identifier for the socket (hash code of the raw WebSocket).
-- **close([status, reason])**: Closes the socket with an optional status and reason.
-
 ### Middlewares:
 
 Middlewares allow you to manipulate request and response objects before they reach your route handlers. They are executed in the order they are added.
@@ -398,7 +212,7 @@ server.listen(
 
 #### Serving Static Files:
 
-`server_nano` supports serving static files out of the box. Simply call the `static` method on your server instance:
+`server_nano_nano` supports serving static files out of the box. Simply call the `static` method on your server instance:
 
 ```dart
 server.static('/path/to/static/files');
@@ -412,8 +226,8 @@ server.static('/path/to/static/files');
 
 ## 🤝 Contributing
 
-If you'd like to contribute to the development of `server_nano`, open a pull request.
+If you'd like to contribute to the development of `server_nano_nano`, open a pull request.
 
 ## 📜 License
 
-`server_nano` is distributed under the [MIT License](#).
+`server_nano_nano` is distributed under the [MIT License](#).

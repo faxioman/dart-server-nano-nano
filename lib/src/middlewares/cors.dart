@@ -1,4 +1,4 @@
-part of '../../server_nano.dart';
+part of '../../server_nano_nano.dart';
 
 /// Cors class is a middleware that adds CORS headers to the response.
 ///
@@ -11,13 +11,13 @@ class Cors extends Middleware {
   final String origin;
   final String methods;
   final String headers;
-  final String allowCrendentials;
+  final String allowCredentials;
 
   Cors({
     this.origin = '*',
     this.methods = 'GET, POST, PUT, DELETE, OPTIONS',
     this.headers = 'Content-Type, Authorization, X-Requested-With',
-    this.allowCrendentials = 'true',
+    this.allowCredentials = 'true',
   });
 
   @override
@@ -25,7 +25,7 @@ class Cors extends Middleware {
     res.setHeader('Access-Control-Allow-Origin', origin);
     res.setHeader('Access-Control-Allow-Methods', methods);
     res.setHeader('Access-Control-Allow-Headers', headers);
-    res.setHeader('Access-Control-Allow-Credentials', allowCrendentials);
+    res.setHeader('Access-Control-Allow-Credentials', allowCredentials);
 
     // Handle preflight requests
     if (req.method.toLowerCase() == 'options') {

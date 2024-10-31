@@ -1,4 +1,4 @@
-import 'package:server_nano/server_nano.dart';
+import 'package:server_nano/server_nano_nano.dart';
 
 void main() {
   final server = Server();
@@ -12,20 +12,7 @@ void main() {
     res.send('Hello User ${req.params['id']}!');
   });
 
-  server.ws('/socket', (socket) {
-    socket.onMessage((message) {
-      print(message);
-    });
-
-    socket.join('tech-group');
-
-    socket.emitToRoom(
-        'connected', 'tech-group', 'User connected to tech-group');
-  });
-
   server.listen(
     port: 3000,
-    wsPort: 3001,
-    useWebsocketInMainThread: true,
   );
 }

@@ -1,4 +1,4 @@
-part of '../../server_nano.dart';
+part of '../../server_nano_nano.dart';
 
 /// Helmet is a collection of 6 smaller middleware functions that set security-related HTTP headers:
 /// - `X-XSS-Protection` sets the `X-XSS-Protection` header to `1; mode=block`.

@@ -1,4 +1,4 @@
-part of '../../server_nano.dart';
+part of '../../server_nano_nano.dart';
 
 /// The `ContextRequest` class wraps Dart's native `HttpRequest` object, providing a convenient interface for accessing request data such as headers, query parameters, cookies, and payloads, as well as determining the request's content type. It too abstracts away the complexity of handling different types of HTTP requests, making it easier for developers to access the data they need without delving into the lower-level details of parsing request headers, cookies, and payloads. It's a helpful utility for web server development in Dart, especially when building RESTful APIs or handling form submissions.
 class ContextRequest {

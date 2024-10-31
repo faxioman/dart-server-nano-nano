@@ -1,4 +1,4 @@
-part of '../../server_nano.dart';
+part of '../../server_nano_nano.dart';
 
 /// A class representing a route tree result.
 /// Contains a [MatchResult] and a [Handler].
