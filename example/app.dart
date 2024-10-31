@@ -1,4 +1,4 @@
-import 'package:server_nano/server_nano_nano.dart';
+import 'package:server_nano_nano/server_nano_nano.dart';
 
 void main() {
   final server = Server();
