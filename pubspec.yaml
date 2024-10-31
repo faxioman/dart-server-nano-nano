@@ -1,7 +1,7 @@
 name: server_nano_nano
 version: 1.0.0
-homepage: https://github.com/jonataslaw/dart-server-nano
-description: A super light http server written in dart.
+homepage: https://github.com/faxioman/dart-server-nano-nano
+description: A super light http server written in dart. All credits to https://github.com/jonataslaw/dart-server-nano
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
